@@ -1,16 +1,35 @@
 <?php include("../template/header.php"); ?>
+<?php include("../config/db.php"); ?>
 
-<?php 
-
+<?php
 $txtID=(isset($_POST['txtID']))?$_POST['txtID']:"";
 $txtNombre=(isset($_POST['txtNombre']))?$_POST['txtNombre']:"";
 $txtImagen=(isset($_FILES['txtImagen']['name']))?$_FILES['txtImagen']:"";
 $accion=(isset($_POST['accion']))?$_POST['accion']:"";
 
-echo $txtID."<br/>";
-echo $txtNombre."<br/>";
-echo $txtImagen."<br/>";
-echo $accion."<br/>";
+switch($accion) {
+    // INSERT INTO `libros` (`id`, `nombre`, `imagen`) VALUES (NULL, 'Libro de PHP', 'imagen.jpg');
+
+    case "Agregar":
+        $sentenciaSQL= $conexion->prepare("INSERT INTO libros (nombre, imagen) VALUES (:nombre, :imagen);");
+        $sentenciaSQL->bindParam(':nombre',$txtNombre);
+        $sentenciaSQL->bindParam(':imagen',$txtImagen);
+        $sentenciaSQL->execute();
+        break;
+
+    case "Modificar":
+        echo "Presionado boton modificar";
+        break;
+
+    case "Cancelar":
+        echo "Presionado boton cancelar";
+        break;
+    
+}
+
+$sentenciaSQL= $conexion->prepare("SELECT * FROM libros");
+$sentenciaSQL->execute();
+$listaLibros=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
