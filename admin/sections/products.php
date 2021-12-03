@@ -20,6 +20,15 @@ switch($accion) {
 
     case "Cancelar":
         break;
+
+    case "Seleccionar":
+        break;
+        
+    case "Borrar":
+        $sentenciaSQL= $conexion->prepare("DELETE FROM libros WHERE id=:id");
+        $sentenciaSQL->bindParam(':id',$txtID);
+        $sentenciaSQL->execute();
+        break;
 }
 
 $sentenciaSQL= $conexion->prepare("SELECT * FROM libros");
@@ -85,7 +94,15 @@ $listaLibros=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                 <td><?php echo $libro['id']; ?></td>
                 <td><?php echo $libro['nombre']; ?></td>
                 <td><?php echo $libro['imagen']; ?></td>
-                <td>Seleccionar | Borrar</td>
+                <td>
+                    
+                Seleccionar | Borrar
+                <form method="post">
+                    <input type="hidden" name="txtID" value="<?php echo $libro['id']; ?>" />
+                    <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary" />
+                    <input type="submit" name="accion" value="Borrar" class="btn btn-danger" />
+                </form>
+                </td>
             </tr>
             <?php } ?>
         </tbody>
