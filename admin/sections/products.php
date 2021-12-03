@@ -22,6 +22,14 @@ switch($accion) {
         break;
 
     case "Seleccionar":
+        $sentenciaSQL= $conexion->prepare("SELECT * FROM libros WHERE id=:id");
+        $sentenciaSQL->bindParam(':id',$txtID);
+        $sentenciaSQL->execute();
+        $libro=$sentenciaSQL->fetch(PDO::FETCH_LAZY);
+
+        $txtID=$libro['id'];
+        $txtNombre=$libro['nombre'];
+        $txtImagen=$libro['imagen'];
         break;
         
     case "Borrar":
@@ -49,16 +57,19 @@ $listaLibros=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
         
                 <div class = "form-group">
                     <label for="textID">ID:</label>
-                    <input type="text" class="form-control" name="txtID" id="txtID" placeholder="ID">
+                    <input type="text" class="form-control" value="<?php echo $txtID; ?>" name="txtID" id="txtID" placeholder="ID">
                 </div>
             
                 <div class = "form-group">
                     <label for="textNombre">Nombre:</label>
-                    <input type="text" class="form-control" name="txtNombre" id="txtNombre" placeholder="Nombre del libro">
+                    <input type="text" class="form-control" value="<?php echo $txtNombre; ?>" name="txtNombre" id="txtNombre" placeholder="Nombre del libro">
                 </div>
                 
                 <div class = "form-group">
                     <label for="textImagen">Imagen:</label>
+                    
+                    <?php echo $txtImagen; ?>"
+
                     <input type="file" class="form-control" name="txtImagen" id="txtImagen" placeholder="Nombre del libro">
                 </div>
         
@@ -95,8 +106,7 @@ $listaLibros=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                 <td><?php echo $libro['nombre']; ?></td>
                 <td><?php echo $libro['imagen']; ?></td>
                 <td>
-                    
-                Seleccionar | Borrar
+
                 <form method="post">
                     <input type="hidden" name="txtID" value="<?php echo $libro['id']; ?>" />
                     <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary" />
