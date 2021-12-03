@@ -8,8 +8,6 @@ $txtImagen=(isset($_FILES['txtImagen']['name']))?$_FILES['txtImagen']:"";
 $accion=(isset($_POST['accion']))?$_POST['accion']:"";
 
 switch($accion) {
-    // INSERT INTO `libros` (`id`, `nombre`, `imagen`) VALUES (NULL, 'Libro de PHP', 'imagen.jpg');
-
     case "Agregar":
         $sentenciaSQL= $conexion->prepare("INSERT INTO libros (nombre, imagen) VALUES (:nombre, :imagen);");
         $sentenciaSQL->bindParam(':nombre',$txtNombre);
@@ -18,13 +16,10 @@ switch($accion) {
         break;
 
     case "Modificar":
-        echo "Presionado boton modificar";
         break;
 
     case "Cancelar":
-        echo "Presionado boton cancelar";
         break;
-    
 }
 
 $sentenciaSQL= $conexion->prepare("SELECT * FROM libros");
@@ -73,8 +68,8 @@ $listaLibros=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
     
 </div>
 
-
 <div class="col-md-7">
+
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -85,12 +80,14 @@ $listaLibros=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
             </tr>
         </thead>
         <tbody>
+            <?php foreach($listaLibros as $libro) { ?>
             <tr>
-                <td>2</td>
-                <td>Aprende php</td>
-                <td>imagen.jpg</td>
+                <td><?php echo $libro['id']; ?></td>
+                <td><?php echo $libro['nombre']; ?></td>
+                <td><?php echo $libro['imagen']; ?></td>
                 <td>Seleccionar | Borrar</td>
             </tr>
+            <?php } ?>
         </tbody>
     </table>
 </div>
