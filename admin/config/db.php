@@ -8,7 +8,7 @@ $contrasenia="";
 try {
     $conexion=new PDO("mysql:host=$host;dbname=$bd", $usuario, $contrasenia);
     if($conexion){
-        echo "Conectado... a sistema";
+        // is conected.
     }
 } catch (Exception $ex) {
     
